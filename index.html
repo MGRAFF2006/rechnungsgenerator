@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechnungsgenerator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Rechnungsgenerator</h1>
+    
+    <div class="form-section">
+      <h2>Firmeninformationen</h2>
+      <div class="logo-upload">
+        <label for="logo-upload">Firmenlogo hochladen:</label>
+        <input type="file" id="logo-upload" accept="image/*">
+        <div id="logo-preview"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="company-name">Firmenname:</label>
+        <input type="text" id="company-name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="company-address">Adresse:</label>
+        <textarea id="company-address" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="company-contact">Kontaktdaten (Tel, Email, etc.):</label>
+        <textarea id="company-contact" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="company-tax">Steuernummer/USt-ID:</label>
+        <input type="text" id="company-tax">
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2>Kundeninformationen</h2>
+      <div class="form-group">
+        <label for="customer-name">Name:</label>
+        <input type="text" id="customer-name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="customer-address">Adresse:</label>
+        <textarea id="customer-address" required></textarea>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2>Rechnungsinformationen</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="invoice-number">Rechnungsnummer:</label>
+          <input type="text" id="invoice-number" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="invoice-date">Rechnungsdatum:</label>
+          <input type="date" id="invoice-date" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="payment-terms">Zahlungsbedingungen:</label>
+        <input type="text" id="payment-terms" value="14 Tage nach Rechnungserhalt">
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2>Rechnungspositionen</h2>
+      <table id="invoice-items">
+        <thead>
+          <tr>
+            <th>Position</th>
+            <th>Beschreibung</th>
+            <th>Menge</th>
+            <th>Preis (€)</th>
+            <th>MwSt (%)</th>
+            <th>Gesamt (€)</th>
+            <th>Aktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><input type="text" class="item-description" required></td>
+            <td><input type="number" class="item-quantity" min="1" value="1" required></td>
+            <td><input type="number" class="item-price" min="0" step="0.01" required></td>
+            <td><input type="number" class="item-vat" min="0" value="19" required></td>
+            <td class="item-total">0.00 €</td>
+            <td><button type="button" class="remove-item">Entfernen</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <button type="button" id="add-item">Position hinzufügen</button>
+      
+      <div class="totals">
+        <div class="total-row">
+          <span>Zwischensumme:</span>
+          <span id="subtotal">0.00 €</span>
+        </div>
+        <div class="total-row">
+          <span>MwSt:</span>
+          <span id="vat-total">0.00 €</span>
+        </div>
+        <div class="total-row total-amount">
+          <span>Gesamtbetrag:</span>
+          <span id="total-amount">0.00 €</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h2>Zusätzliche Informationen</h2>
+      <div class="form-group">
+        <label for="notes">Notizen/Zahlungsinformationen:</label>
+        <textarea id="notes"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="bank-details">Bankverbindung:</label>
+        <textarea id="bank-details"></textarea>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button type="button" id="preview-invoice">Vorschau</button>
+    </div>
+  </div>
+
+  <div id="preview-container" class="hidden">
+    <div class="preview-content">
+      <div class="preview-header">
+        <h2>Rechnungsvorschau</h2>
+        <button id="close-preview">Schließen</button>
+      </div>
+      <div id="invoice-preview"></div>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
